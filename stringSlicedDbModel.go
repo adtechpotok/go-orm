@@ -1,36 +1,34 @@
-package src
+package go_orm
 
 import (
 	"sync"
 )
 
-type BaseSlicedDbModel struct {
-	cache      map[int][]PotokSliceOrm
+type StringSlicedDbModel struct {
+	cache      map[string][]PotokStringSliceOrm
 	cacheMutex *sync.RWMutex
 	isInit     bool
 	lenght     int
 }
 
-func (m *BaseSlicedDbModel) init() {
+func (m *StringSlicedDbModel) init() {
 	if m.isInit != true {
 		m.cacheMutex = &sync.RWMutex{}
-		m.cache = make(map[int][]PotokSliceOrm)
+		m.cache = make(map[string][]PotokStringSliceOrm)
 		m.isInit = true
 		m.lenght = 0
 
 	}
 }
-
-func (m *BaseSlicedDbModel) GetCache() interface{} {
+func (m *StringSlicedDbModel) GetCache() interface{} {
 	m.init()
 	return m.cache
 }
-
-func (m *BaseSlicedDbModel) FindInCache(id int) []PotokSliceOrm {
+func (m *StringSlicedDbModel) FindInCache(id string) []PotokStringSliceOrm {
 	m.init()
 	m.cacheMutex.Lock()
-	var result []PotokSliceOrm
-	var t []PotokSliceOrm
+	var result []PotokStringSliceOrm
+	var t []PotokStringSliceOrm
 	defer m.cacheMutex.Unlock()
 	if _, ok := m.cache[id]; ok {
 		result = m.cache[id]
@@ -45,9 +43,9 @@ func (m *BaseSlicedDbModel) FindInCache(id int) []PotokSliceOrm {
 	return t
 }
 
-func (m *BaseSlicedDbModel) AddToCache(v PotokSliceOrm) {
+func (m *StringSlicedDbModel) AddToCache(v PotokStringSliceOrm) {
 	m.init()
-	var res []PotokSliceOrm
+	var res []PotokStringSliceOrm
 	m.cacheMutex.Lock()
 	defer m.cacheMutex.Unlock()
 
@@ -58,24 +56,24 @@ func (m *BaseSlicedDbModel) AddToCache(v PotokSliceOrm) {
 			res = append(res, val)
 		}
 	}
-	m.lenght = m.lenght + len(res) + 1
+	m.lenght = len(res) + 1
 	m.cache[v.GetId()] = append(res, v)
 }
 
-func (m *BaseSlicedDbModel) ClearCache() {
+func (m *StringSlicedDbModel) ClearCache() {
 	m.init()
 	m.cacheMutex.Lock()
 	defer m.cacheMutex.Unlock()
 
-	m.cache = make(map[int][]PotokSliceOrm)
+	m.cache = make(map[string][]PotokStringSliceOrm)
 }
 
-func (m *BaseSlicedDbModel) Len() int {
+func (m *StringSlicedDbModel) Len() int {
 	return m.lenght
 }
 
-type PotokSliceOrm interface {
+type PotokStringSliceOrm interface {
 	GetRelationKey() int
-	GetId() int
+	GetId() string
 	IsActive() bool
 }

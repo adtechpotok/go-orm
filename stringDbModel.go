@@ -1,4 +1,4 @@
-package src
+package go_orm
 
 import (
 	"sync"
