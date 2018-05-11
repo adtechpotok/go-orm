@@ -1,9 +1,9 @@
 ## Potok Orm
 [![Build Status](https://travis-ci.org/adtechpotok/go-orm.svg?branch=master)](https://travis-ci.org/adtechpotok/go-orm)
 -
-2 type are supported sliced and base models (string or int id).
-Base will return object or nil
-Sliced will return slice
+2 type are supported: sliced and base with stringed or int id.
+Base will return interface or nil.
+Sliced will return slice.
 ## Example base struct
 ```
  type UserInfo struct {
