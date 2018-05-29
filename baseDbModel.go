@@ -122,7 +122,7 @@ func (m *BaseDbModel) AddToCache(v PotokOrm) {
 	}
 
 	for id, val := range m.altStringIndex {
-		if _, ok := m.altIntCache[id]; !ok {
+		if _, ok := m.altStringCache[id]; !ok {
 			m.altStringCache[id] = make(map[string]*PotokOrm)
 		}
 		m.altStringCache[id][val(v)] = &v
