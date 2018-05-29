@@ -73,7 +73,7 @@ func TestStringDbModelClearCache(t *testing.T) {
 }
 
 //Проверка добавления двух значений с одинаковым id
-func TestStringDbModelAddToCacheDuplicate(t *testing.T) {
+func TestStringDbModel_AddToCacheDuplicate(t *testing.T) {
 	v := StringDbModel{}
 
 	testCases := []testStringDbModelPotok{
@@ -84,7 +84,23 @@ func TestStringDbModelAddToCacheDuplicate(t *testing.T) {
 		v.AddToCache(testStringDbModelPotok{tc.active, tc.id})
 	}
 	if v.Len() != 1 {
-		t.Error("Remove of duplicates crash")
+		t.Error("Remove of duplicates crashed.")
+	}
+}
+
+func TestStringDbModel_ClearOutDated(t *testing.T) {
+	v := StringDbModel{}
+
+	testCases := []testStringDbModelPotok{
+		{true, "1"},
+		{true, "1"},
+	}
+	for _, tc := range testCases {
+		v.AddToCache(testStringDbModelPotok{tc.active, tc.id})
+	}
+	v.ClearOutDated()
+	if v.Len() != 0 {
+		t.Error("Outdated were not removed.")
 	}
 }
 
@@ -96,4 +112,4 @@ type testStringDbModelPotok struct {
 func (m testStringDbModelPotok) IsActive() bool { return m.active }
 func (m testStringDbModelPotok) GetId() string  { return m.id }
 
-func (m testStringDbModelPotok) OutDated() bool    { return false }
+func (m testStringDbModelPotok) OutDated() bool { return true }

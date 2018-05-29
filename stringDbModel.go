@@ -63,7 +63,7 @@ func (m *StringDbModel) Len() int {
 func (m *StringDbModel) ClearOutDated() {
 	m.init()
 	m.cacheMutex.Lock()
-	defer 	m.cacheMutex.Unlock()
+	defer m.cacheMutex.Unlock()
 	data := m.cache
 
 	for key, item := range data {
