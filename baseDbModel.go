@@ -6,6 +6,18 @@ import (
 
 const StatusActive = "Active"
 
+type IBaseDbModel interface {
+	RegisterIntIndex(string string, AltIndex AltIntIndex)
+	RegisterStringIndex(string string, AltIndex AltStringIndex)
+
+	GetCache() interface{}
+	FindInCache(id int) PotokOrm
+	FindIndex(index string, id interface{}, onlyActive bool) PotokOrm
+	AddToCache(v PotokOrm)
+	ClearCache()
+	Len() int
+}
+
 type BaseDbModel struct {
 	cache      map[int]*PotokOrm
 	cacheMutex *sync.RWMutex
